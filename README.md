@@ -6,7 +6,7 @@ Shukudai it a tool for practicing japanese hiragana handwriting. It can generate
 
 This type of sheet is currently the only supported one. It generates 12 kanjis, each with it's corresponding romaji-style pronounciation and meaning. Below each pronounciation are vertical boxes which can be filled with the corresponding hiragana. The sheets look like this:
 
-![Kanji-Hiragana-Sheet PDF](misc/kanji_hira_sheet_poster.jpg?raw=true)
+![Kanji-Hiragana-Sheet PDF](misc/kanji_hira_sheet_poster.png?raw=true)
 
 Download the [sample PDF](misc/sheet_123.pdf?raw=true) from the picture above.
 
