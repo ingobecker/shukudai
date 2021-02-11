@@ -2,6 +2,7 @@ module Shukudai
   module Config
     def self.load
       data_dir = File.expand_path(File.dirname(__FILE__) + '/../../data')
+      share_dir = "#{Dir.home}/.local/share/shukudai"
       @@config ||= begin
                      {
                        fonts: {
@@ -11,8 +12,7 @@ module Shukudai
                        },
                        data: {
                          romaji_map: "#{data_dir}/romaji_map.json",
-                         kanjidic2_xml: "#{Dir.home}/.local/share/shukudai/kanjidic2.xml",
-                         jmdict_xml: "#{data_dir}/jmdict.xml"
+                         kanjidic2_xml: "#{share_dir}/kanjidic2.xml",
                        }
                      }
                    end

@@ -13,8 +13,9 @@ WORKDIR /home/app/src
 
 COPY --chown=app:app . .
 RUN mkdir -p ~/.local/share/shukudai \
-  && curl -s -o ~/.local/share/shukudai/kanjidic2.xml.gz $KANJIDIC2_URL \
-  && gunzip ~/.local/share/shukudai/kanjidic2.xml.gz
+  && cd ~/.local/share/shukudai \
+  && curl -s -o kanjidic2.xml.gz $KANJIDIC2_URL \
+  && gunzip kanjidic2.xml.gz
 
 RUN gem build shukudai.gemspec && gem install *.gem
 WORKDIR /home/app/run
