@@ -2,4 +2,4 @@
 
 require 'shukudai'
 
-Shukudai::CLI.start
+Shukudai::CLI.start()
