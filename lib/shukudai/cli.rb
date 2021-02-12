@@ -13,6 +13,8 @@ module Shukudai
       subcommands_usage = <<~USAGE
       Subcommands:
         kanjigana:      train hiragana handwriting and kanji knowledge at once
+        hiragana:       train handwriting of single hiraganas
+        kanjivg:        import kanjivg stroke order SVGs
 
         Use shukudai [subcommand] --help form more options.
 
@@ -51,8 +53,46 @@ module Shukudai
 
             options[:output] = o
           end
+        end,
+
+        hiragana: OptionParser.new do |opts|
+          opts.banner = 'Usage: shukudai hiragana [options]'
+
+          opts.on('-c <char>',
+                  '--char <char>',
+                  String,
+                  'Hiragana to generate a sheet for') do |o|
+            options[:char] = o
+          end
+
+          opts.on('-o [<filename>]',
+                  '--output [<filename>]',
+                  String,
+                  '(default: sheet.pdf)') do |o|
+
+            options[:output] = o
+          end
+        end,
+
+        kanjivg: OptionParser.new do |opts|
+          opts.banner = 'Usage: shukudai kanjivg [options]'
+
+          opts.on('-i [<dir>]',
+                  '--import [<dir>]',
+                  String,
+                  'Directory containing kanjivg SVGs (default: $XDG_DATA_HOME/shukudai/kanji)') do |d|
+            options[:import_dir] = d
+          end
+
+          opts.on('-o [<filename>]',
+                  '--output [<filename>]',
+                  String,
+                  'Assembled SVGs output location (default: $XDG_DATA_HOME/shukudai/hiragana.svg)') do |d|
+            options[:hiragana_svg] = d
+          end
         end
       }
+
 
       main.order!
 
@@ -63,7 +103,6 @@ module Shukudai
       else
         abort("#{main.help} Subcommand \"#{subcommand}\" not found. \n\n")
       end
-
     end
 
     def self.kanjigana(opts)
@@ -74,6 +113,17 @@ module Shukudai
       puts "Generating PDF #{s.output} with seed #{s.seed}..."
       s.to_pdf
       puts "Done!"
+    end
+
+    def self.kanjivg(opts)
+      puts "Generating SVG with hiragana stoke orders..."
+      KanjiVGImporter.assemble_svg
+    end
+
+    def self.hiragana(opts)
+      puts "Generating hiragana sheet..."
+      s = HiraganaSheet.new(output: opts[:output], char: opts[:char])
+      s.to_pdf
     end
   end
 end

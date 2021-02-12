@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.add_dependency "eiwa"
   spec.add_dependency "prawn", "~> 2"
+  spec.add_dependency "prawn-svg", "~> 0.31.0"
 end

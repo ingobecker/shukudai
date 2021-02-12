@@ -6,7 +6,9 @@ require 'shukudai/cli'
 require 'shukudai/config'
 require 'shukudai/sheet'
 require 'shukudai/utils'
+require 'shukudai/kanjivg_import'
 require 'shukudai/kanji_hiragana_sheet'
+require 'shukudai/hiragana_sheet'
 
 module Shukudai
   class Error < StandardError; end

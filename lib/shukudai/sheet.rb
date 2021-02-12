@@ -31,9 +31,11 @@ module Shukudai
       }
     end
 
-    def kana_boxes(d, count)
+    def kana_boxes(d, count, x = nil, y = nil)
       size = 40
-      d.bounding_box([d.bounds.left, d.cursor], width: size, height: size * count) do
+      x ||= d.bounds.left
+      y ||= d.cursor
+      d.bounding_box([x, y], width: size, height: size * count) do
         count.times do |i|
           y = i + 1
           d.stroke_rectangle [0, y * size], size, size

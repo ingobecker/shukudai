@@ -13,6 +13,8 @@ module Shukudai
                        data: {
                          romaji_map: "#{data_dir}/romaji_map.json",
                          kanjidic2_xml: "#{share_dir}/kanjidic2.xml",
+                         kanjivg_dir: "#{share_dir}/kanji",
+                         hiragana_svg: "#{share_dir}/hiragana.svg",
                        }
                      }
                    end
