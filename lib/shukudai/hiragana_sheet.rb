@@ -8,6 +8,7 @@ module Shukudai
 
     def initialize(output: 'sheet.pdf', char: )
       super()
+      @output = output
       @char = char
       @svg_id = "0#{@char.ord.to_s(16)}"
       @romaji = Utils.char_to_romaji(@char)
