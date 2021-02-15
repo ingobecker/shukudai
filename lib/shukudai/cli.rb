@@ -7,7 +7,7 @@ module Shukudai
       options = {
         seed: nil,
         output: 'sheet.pdf',
-        jtlp: 4
+        jlpt: 4
       }
 
       subcommands_usage = <<~USAGE
@@ -106,9 +106,10 @@ module Shukudai
     end
 
     def self.kanjigana(opts)
-      puts "Loading kanjis..."
+      puts "Loading kanjis for JLPT grade #{opts[:jlpt]}..."
       k = Utils.load_kanji_by_jlpt_grade(path: Config.load[:data][:kanjidic2_xml],
-                                         jlpt_grade: opts[:jltp])
+                                         jlpt_grade: opts[:jlpt])
+      puts "#{k.count} kanjis loaded."
       s = KanjiHiraganaSheet.new(kanjis: k, seed: opts[:seed], output: opts[:output])
       puts "Generating PDF #{s.output} with seed #{s.seed}..."
       s.to_pdf
