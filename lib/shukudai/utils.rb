@@ -3,9 +3,13 @@ require 'eiwa'
 
 module Shukudai
   module Utils
-    def self.load_kanji_by_jlpt_grade(path: , jlpt_grade: 4)
+    def self.load_kanjis(path: , &filter)
       kanjis = Eiwa.parse_file(path, type: :kanjidic2)
-      kanjis.select{ |k| k.jlpt == jlpt_grade }
+      if filter
+        kanjis.select(&filter)
+      else
+        kanjis
+      end
     end
 
     def self.char_to_romaji(char)

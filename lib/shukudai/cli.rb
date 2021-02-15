@@ -107,8 +107,12 @@ module Shukudai
 
     def self.kanjigana(opts)
       puts "Loading kanjis for JLPT grade #{opts[:jlpt]}..."
-      k = Utils.load_kanji_by_jlpt_grade(path: Config.load[:data][:kanjidic2_xml],
-                                         jlpt_grade: opts[:jlpt])
+      k = Utils.load_kanjis(path: Config.load[:data][:kanjidic2_xml]) do |kanji|
+        kanji.jlpt == opts[:jlpt] \
+        && kanji.kunyomi \
+        && kanji.text \
+        && kanji.text != ""
+      end
       puts "#{k.count} kanjis loaded."
       s = KanjiHiraganaSheet.new(kanjis: k, seed: opts[:seed], output: opts[:output])
       puts "Generating PDF #{s.output} with seed #{s.seed}..."
