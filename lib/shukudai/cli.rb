@@ -7,13 +7,14 @@ module Shukudai
       options = {
         seed: nil,
         output: 'sheet.pdf',
-        jlpt: 4
+        jlpt: 4,
+        kana: :hira
       }
 
       subcommands_usage = <<~USAGE
       Subcommands:
-        kanjigana:      train hiragana handwriting and kanji knowledge at once
-        hiragana:       train handwriting of single hiraganas
+        kanjikana:      train kana handwriting and kanji knowledge at once
+        kana:           train handwriting of single kanas
         kanjivg:        import kanjivg stroke order SVGs
 
         Use shukudai [subcommand] --help form more options.
@@ -27,8 +28,8 @@ module Shukudai
       end
 
       subcommands = {
-        kanjigana: OptionParser.new do |opts|
-          opts.banner = 'Usage: shukudai kanjigana [options]'
+        kanjikana: OptionParser.new do |opts|
+          opts.banner = 'Usage: shukudai kanjikana [options]'
 
           opts.on('-s [<number>]',
                   '--seed [<number>]',
@@ -42,7 +43,7 @@ module Shukudai
                  '--jlpt [<grade>]',
                  Integer,
                  'Use kanjis of the given JLPT grade. (default: 4)') do |j|
-            options[:jltp] = j
+            options[:jlpt] = j if j.between?(1, 4)
           end
 
 
@@ -53,15 +54,23 @@ module Shukudai
 
             options[:output] = o
           end
+
+          opts.on('-k [<hira|kata>]',
+                  '--kana [<hira|kata>]',
+                  String,
+                  'Show answer in hiragana or katakana (default: hira)') do |k|
+
+            options[:kana] = k.to_sym if %w(hira kata).include? k
+          end
         end,
 
-        hiragana: OptionParser.new do |opts|
-          opts.banner = 'Usage: shukudai hiragana [options]'
+        kana: OptionParser.new do |opts|
+          opts.banner = 'Usage: shukudai kana [options]'
 
           opts.on('-c <char>',
                   '--char <char>',
                   String,
-                  'Hiragana to generate a sheet for') do |o|
+                  'Kana to generate a sheet for') do |o|
             options[:char] = o
           end
 
@@ -105,16 +114,15 @@ module Shukudai
       end
     end
 
-    def self.kanjigana(opts)
+    def self.kanjikana(opts)
       puts "Loading kanjis for JLPT grade #{opts[:jlpt]}..."
       k = Utils.load_kanjis(path: Config.load[:data][:kanjidic2_xml]) do |kanji|
         kanji.jlpt == opts[:jlpt] \
-        && kanji.kunyomi \
-        && kanji.text \
+        && kanji.kunyomi.any? \
         && kanji.text != ""
       end
       puts "#{k.count} kanjis loaded."
-      s = KanjiHiraganaSheet.new(kanjis: k, seed: opts[:seed], output: opts[:output])
+      s = KanjiKanaSheet.new(kanjis: k, seed: opts[:seed], output: opts[:output], to: opts[:kana])
       puts "Generating PDF #{s.output} with seed #{s.seed}..."
       s.to_pdf
       puts "Done!"
@@ -125,9 +133,9 @@ module Shukudai
       KanjiVGImporter.assemble_svg
     end
 
-    def self.hiragana(opts)
+    def self.kana(opts)
       puts "Generating hiragana sheet..."
-      s = HiraganaSheet.new(output: opts[:output], char: opts[:char])
+      s = KanaSheet.new(output: opts[:output], char: opts[:char])
       s.to_pdf
     end
   end

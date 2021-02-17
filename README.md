@@ -2,39 +2,45 @@
 
 Shukudai it a tool for practicing japanese hiragana handwriting. It can generate two different types of PDF worksheets at the moment.
 
-## Kanji-Hiragana-Sheets
+## Kanji-Kana-Sheets
 
-This type of sheet consists of 12 kanjis, each with it's corresponding romaji-style pronounciation and meaning. Below each pronounciation there are vertical boxes which can be filled with the corresponding hiragana. The sheets look like this:
+This type of sheet consists of 12 kanjis, each with it's corresponding romaji-style pronounciation and meaning. Below each pronounciation there are vertical boxes which can be filled with the corresponding kanas. There is the option to write the word in hiragana or katakana. The sheets look like this:
 
-![Kanji-Hiragana-Sheet PDF](misc/kanji_hira_sheet_poster.png?raw=true)
+<img srcset="https://github.com/ingobecker/shukudai/raw/main/misc/kanji_kana_sheet_poster_797w.png, https://github.com/ingobecker/shukudai/raw/main/misc/kanji_kana_sheet_poster_1991w.png 2x" src="https://github.com/ingobecker/shukudai/raw/main/misc/kanji_kana_sheet_poster_797w.png" alt="Kanji-Kana-Sheet PDF">
 
 Download the [sample PDF](misc/sheet_123.pdf?raw=true) from the picture above.
 
-To generate those sheets use the `kanjigana` subcommand:
+To generate those sheets use the `kanjikana` subcommand:
 
 ```
-$ shukudai kanjigana --seed 123 --jlpt 2 --output sheet_123.pdf
+$ shukudai kanjikana --seed 123 --jlpt 2 --kana hira --output sheet_123.pdf
 # or
-$ shukudai kanjigana -s 123 -j 2 -o sheet_123.pdf
+$ shukudai kanjikana -s 123 -j 2 -k hira -o sheet_123.pdf
 
-# don't specify a seed to generate a random sheet
-$ shukudai kanjigana -o random.pdf
+# to generate a sheet with the answer in katakana use the following option
+$ shukudai kanjikana -k kana -o kanji_katakan_sheet.pdf
+
+# don't specify a seed and kana option to generate a random sheet
+# with answer in hiragana
+$ shukudai kanjikana -o random.pdf
 ```
 
-## Hiragana-Sheets
+## Kana-Sheets
 
-If you have just started learning hiragana, this type of worksheet helps you practice handwriting of individual hiraganas:
+If you have just started learning hiragana and katakana, this type of worksheet helps you practice handwriting of individual kanas:
 
-![Hiragana-Sheet PDF](misc/hiragana_sheet_poster.png?raw=true)
+<img srcset="https://github.com/ingobecker/shukudai/raw/main/misc/kana_sheet_poster_664w.png, https://github.com/ingobecker/shukudai/raw/main/misc/kana_sheet_poster_1669w.png 2x" src="https://github.com/ingobecker/shukudai/raw/main/misc/kana_sheet_poster_664w.png" alt="Kana-Sheet PDF">
 
 Download the [sample PDF](misc/sheet_se.pdf?raw=true) from the picture above.
 
-To generate one use the `hiragana` subcommand:
+To generate one use the `kana` subcommand:
 
 ```
-$ shukudai hiragana --char せ --output sheet_se.pdf
-#or just
-$ shukudai hiragana -c せ -o sheet_se.pdf
+$ shukudai kana --char せ --output sheet_se.pdf
+# or just
+$ shukudai kana -c せ -o sheet_se.pdf
+# or for katakana
+$ shukudai kana -c セ -o sheet_se.pdf
 ```
 
 
@@ -48,7 +54,7 @@ Build and run the container as shown below:
 $ git clone https://github.com/ingobecker/shukudai.git
 $ cd shukudai
 $ podman build -t shukudai .
-$ podman container runlabel exec shukudai -- kanjigana -s 123 -o sheet_123.pdf
+$ podman container runlabel exec shukudai -- kanjikana -s 123 -o sheet_123.pdf
 ```
 
 This will create a file called `sheet_123.pdf` in the current working directory using the seed `123`.

@@ -1,4 +1,5 @@
 require 'json'
+require 'kconv'
 require 'nokogiri'
 
 module Shukudai
@@ -11,9 +12,11 @@ module Shukudai
       f = File.read(config[:data][:romaji_map])
       m = JSON.parse(f)
 
-      m.delete('ゟ')
-      filenames = m.map do |k, v|
-        next if k.size > 1
+      "ゝゞゟ".each_char {|c| m.delete(c)}
+      hiragana = m.reject{|k, v| k.size > 1}.map{|k,v| k}.join
+      kana = NKF.nkf("-h2 -w", hiragana) + hiragana
+
+      filenames = kana.chars.map do |k|
         {
           file: "#{kanjivg_dir}/0#{k.ord.to_s(16)}.svg",
           char: k

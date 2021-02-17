@@ -2,7 +2,7 @@ require 'prawn-svg'
 require 'nokogiri'
 
 module Shukudai
-  class HiraganaSheet < Sheet
+  class KanaSheet < Sheet
 
     attr_reader :char
 

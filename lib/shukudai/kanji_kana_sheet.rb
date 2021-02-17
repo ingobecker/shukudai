@@ -1,9 +1,9 @@
 module Shukudai
-  class KanjiHiraganaSheet < Sheet
+  class KanjiKanaSheet < Sheet
 
     attr_reader :kanjis, :seed, :count
 
-    def initialize(output: 'sheet.pdf', kanjis: , seed: nil)
+    def initialize(output: 'sheet.pdf', kanjis: , seed: nil, to: :hira)
       super()
       @output = output
       @kanjis = kanjis
@@ -11,6 +11,7 @@ module Shukudai
       @rng = Random.new(@seed)
       @count = 12
       @romaji_map = nil
+      @to = to
     end
 
     def sample
@@ -70,7 +71,7 @@ module Shukudai
       end
 
       # answer
-      answer_str = answer.map{ |a| "#{a[0]}: #{a[1]}"}.join(' | ')
+      answer_str = answer.map{ |a| "#{a[0]}: #{@to == :hira ? a[1] : NKF.nkf("-h2 -w", a[1])}"}.join(' | ')
       @doc.grid([2, 0], [2, 12]).bounding_box do
         @doc.font 'cjk', size: 10
         @doc.text answer_str, valign: :bottom
